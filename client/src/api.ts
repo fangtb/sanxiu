@@ -1,4 +1,4 @@
-import type { ConversationDemo, DailyTask, ItemType, ReviewResult, SemanticRelatedItem, StudyItem, User } from './types';
+import type { AppConfig, ConversationDemo, DailyTask, ItemType, ReviewResult, SemanticRelatedItem, StudyItem, User } from './types';
 
 const tokenKey = 'sanxiu-token';
 
@@ -49,6 +49,9 @@ export interface ItemInput {
 }
 
 export const api = {
+  getConfig() {
+    return request<AppConfig>('/api/config');
+  },
   login(input: { account: string; password: string }) {
     return request<AuthResponse>('/api/auth/login', {
       method: 'POST',

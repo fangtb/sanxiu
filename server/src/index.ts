@@ -52,6 +52,10 @@ const aiConfig = {
   baseUrl: process.env.AI_BASE_URL ?? process.env.DEEPSEEK_BASE_URL ?? process.env.OPENAI_BASE_URL ?? 'https://api.openai.com/v1',
   model: process.env.AI_MODEL ?? process.env.DEEPSEEK_MODEL ?? process.env.OPENAI_MODEL ?? 'gpt-4o-mini'
 };
+const publicConfig = {
+  icpRecord: (process.env.ICP_RECORD ?? '').trim(),
+  icpRecordUrl: (process.env.ICP_RECORD_URL ?? 'https://beian.miit.gov.cn/').trim() || 'https://beian.miit.gov.cn/'
+};
 const itemTypeSchema = z.enum(['word', 'sentence']);
 const reviewResultSchema = z.enum(['remembered', 'forgotten']);
 
@@ -649,6 +653,10 @@ function updateTaskCompletion(taskId: number) {
 app.get('/api/health', (_req, res) => {
   res.json({ ok: true });
 });
+
+app.get('/api/config', ((_req, res) => {
+  res.json(publicConfig);
+}) as RequestHandler);
 
 app.post('/api/auth/register', (_req, res) => {
   res.status(403).json({ message: '注册暂未开放' });

@@ -12,6 +12,11 @@ export interface User {
   updatedAt: string;
 }
 
+export interface AppConfig {
+  icpRecord: string;
+  icpRecordUrl: string;
+}
+
 export interface StudyItem {
   id: number;
   type: ItemType;

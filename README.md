@@ -1,6 +1,6 @@
 # sanxiu
 
->一个基于 Node.js 的轻量级个人散修技能工具, 包括不限于English技能,股票分析等
+>一个基于 Node.js 的轻量级个人散修技能工具, 包括不限于English技能等
 
 [![License](https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey)](LICENSE)
 ![img_1.png](img_1.png)

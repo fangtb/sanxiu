@@ -1,7 +1,7 @@
 import { createContext, FormEvent, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
 import { BrowserRouter, Link, Navigate, NavLink, Outlet, Route, Routes, useNavigate, useSearchParams } from 'react-router-dom';
 import { api, getToken, setToken, type ItemInput } from './api';
-import type { ConversationDemo, DailyTask, ItemType, SemanticRelatedItem, StudyItem, TaskItem, User } from './types';
+import type { AppConfig, ConversationDemo, DailyTask, ItemType, SemanticRelatedItem, StudyItem, TaskItem, User } from './types';
 
 interface AuthContextValue {
   user: User | null;
@@ -76,6 +76,41 @@ function speakEnglish(text: string, rate = 0.9) {
   window.speechSynthesis.speak(utterance);
 }
 
+function AppFooter() {
+  const [config, setConfig] = useState<AppConfig | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+    api.getConfig()
+      .then((data) => {
+        if (mounted) {
+          setConfig(data);
+        }
+      })
+      .catch(() => {
+        if (mounted) {
+          setConfig(null);
+        }
+      });
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  if (!config?.icpRecord) {
+    return null;
+  }
+
+  return (
+    <footer className="app-footer">
+      <a href={config.icpRecordUrl} target="_blank" rel="noreferrer">
+        {config.icpRecord}
+      </a>
+    </footer>
+  );
+}
+
 function ProtectedLayout() {
   const { user, loading, logout } = useAuth();
 
@@ -102,6 +137,8 @@ function ProtectedLayout() {
       <main className="main-content">
         <Outlet />
       </main>
+
+      <AppFooter />
 
       <nav className="bottom-nav">
         <NavLink to="/" end>今日</NavLink>
@@ -160,6 +197,7 @@ function LoginPage() {
           <button className="primary-button" disabled={submitting}>{submitting ? '登录中...' : '登录'}</button>
         </form>
       </section>
+      <AppFooter />
     </div>
   );
 }
